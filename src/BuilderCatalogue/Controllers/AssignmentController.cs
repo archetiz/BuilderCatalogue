@@ -37,6 +37,52 @@ namespace BuilderCatalogue.Controllers
             return Ok(buildableSets);
         }
 
+        [HttpGet("two")]
+        public async Task<ActionResult<IEnumerable<string>>> SolveSecondAssignment()
+        {
+            var username = "landscape-artist";
+            var set = "tropical-island";
+
+            var userData = await GetUserDataByName(username);
+            var setData = await GetSetDataByName(set);
+
+            if (userData is null)
+                return NotFound("User not found");
+
+            if (setData is null)
+                return NotFound("Set not found");
+
+            var missingElements = new Dictionary<(string pieceId, string color), int>();
+            foreach (var sp in setData.Pieces)
+            {
+                if (!userData.Collection.ContainsKey(sp.Key))
+                {
+                    missingElements[sp.Key] = sp.Value;
+                }
+                else if (userData.Collection[sp.Key] < sp.Value)
+                {
+                    missingElements[sp.Key] = userData.Collection[sp.Key] - sp.Value;
+                }
+            }
+
+            var usersToCollaborate = new List<string>();
+
+            var users = await apiClient.Api.Users.GetAsync();
+            foreach (var user in users.Users)
+            {
+                if (user.Id == userData.Id)
+                    continue;
+
+                var otherUserData = await GetUserDataById(user.Id);
+                if (CanBuildSet(otherUserData.Collection, missingElements))
+                {
+                    usersToCollaborate.Add(user.Username);
+                }
+            }
+
+            return Ok(usersToCollaborate);
+        }
+
         private async Task<UserData?> GetUserDataByName(string username)
         {
             var userSummary = await apiClient.Api.User.ByUsername[username].GetAsync();
@@ -52,6 +98,15 @@ namespace BuilderCatalogue.Controllers
             return userDataById?.ToUserData();
         }
 
+        private async Task<SetData?> GetSetDataByName(string setName)
+        {
+            var setSummary = await apiClient.Api.Set.ByName[setName].GetAsync();
+            if (setSummary?.Id is null)
+                return null;
+
+            return await GetSetDataById(setSummary.Id);
+        }
+
         private async Task<SetData?> GetSetDataById(string id)
         {
             var setDataById = await apiClient.Api.Set.ById[id].GetAsync();
@@ -60,39 +115,5 @@ namespace BuilderCatalogue.Controllers
 
         private bool CanBuildSet(Dictionary<(string pieceId, string color), int> userCollection, Dictionary<(string pieceId, string color), int> setPieces)
             => !setPieces.Any(p => !userCollection.ContainsKey(p.Key) || userCollection[p.Key] < p.Value);
-
-        private bool CanBuildSet(Dictionary<(string pieceId, string color), int> userCollection, BrickApi.Client.Api.Set.ById.Item.ByIdGetResponse setDetails)
-        {
-            foreach (var piece in setDetails.Pieces)
-            {
-                var key = (piece.Part.DesignID, ((int)piece.Part.Material).ToString());
-                if (!userCollection.ContainsKey(key) || userCollection[key] < piece.Quantity)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private bool CanBuildSet(Dictionary<(string pieceId, string color), int> setElements, BrickApi.Client.Api.User.ById.Item.ByIdGetResponse userDetails)
-        {
-            var userCollection = new Dictionary<(string pieceId, string color), int>();
-            foreach (var piece in userDetails!.Collection)
-            {
-                foreach (var variant in piece.Variants)
-                {
-                    userCollection[(piece.PieceId, variant.Color)] = (int)variant.Count;
-                }
-            }
-
-            foreach (var element in setElements)
-            {
-                if (!userCollection.ContainsKey(element.Key) || userCollection[element.Key] < element.Value)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
     }
 }
