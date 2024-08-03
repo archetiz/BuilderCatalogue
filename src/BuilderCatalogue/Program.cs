@@ -1,6 +1,13 @@
+using BrickApi.Client;
+using Microsoft.Kiota.Abstractions.Authentication;
+using Microsoft.Kiota.Http.HttpClientLibrary;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var authProvider = new AnonymousAuthenticationProvider();
+var adapter = new HttpClientRequestAdapter(authProvider);
+builder.Services.AddTransient(_ => new BrickApiClient(adapter));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

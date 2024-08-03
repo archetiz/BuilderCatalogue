@@ -1,0 +1,508 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "https://d16m5wbro86fg2.cloudfront.net API",
+    "description": "https://d16m5wbro86fg2.cloudfront.net API",
+    "version": "v1.0"
+  },
+  "servers": [
+    {
+      "url": "https://d16m5wbro86fg2.cloudfront.net"
+    }
+  ],
+  "paths": {
+    "/api/users": {
+      "get": {
+        "description": "Get /api/users",
+        "operationId": "Get.api.users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-amz-server-side-encryption": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Cache": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Pop": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "username": {
+                            "type": "string"
+                          },
+                          "location": {
+                            "type": "string"
+                          },
+                          "brickCount": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/by-username/{username}": {
+      "get": {
+        "description": "Get /api/user/by-username/{username}",
+        "operationId": "Get.api.user.by-username.{username}",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-amz-server-side-encryption": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Cache": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Pop": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "brickCount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "username",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/user/by-id/{id}": {
+      "get": {
+        "description": "Get /api/user/by-id/{id}",
+        "operationId": "Get.api.user.by-id.{id}",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-amz-server-side-encryption": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Cache": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Pop": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "brickCount": {
+                      "type": "number"
+                    },
+                    "collection": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "pieceId": {
+                            "type": "string"
+                          },
+                          "variants": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "color": {
+                                  "type": "string"
+                                },
+                                "count": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/sets": {
+      "get": {
+        "description": "Get /api/sets",
+        "operationId": "Get.api.sets",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-amz-server-side-encryption": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Cache": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Pop": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "Sets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "setNumber": {
+                            "type": "string"
+                          },
+                          "totalPieces": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/set/by-name/{name}": {
+      "get": {
+        "description": "Get /api/set/by-name/{name}",
+        "operationId": "Get.api.set.by-name.{name}",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-amz-server-side-encryption": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Cache": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Pop": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "setNumber": {
+                      "type": "string"
+                    },
+                    "totalPieces": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/set/by-id/{id}": {
+      "get": {
+        "description": "Get /api/set/by-id/{id}",
+        "operationId": "Get.api.set.by-id.{id}",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-amz-server-side-encryption": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Cache": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Pop": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "setNumber": {
+                      "type": "string"
+                    },
+                    "pieces": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "part": {
+                            "type": "object",
+                            "properties": {
+                              "designID": {
+                                "type": "string"
+                              },
+                              "material": {
+                                "type": "number"
+                              },
+                              "partType": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "quantity": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "totalPieces": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/colours": {
+      "get": {
+        "description": "Get /api/colours",
+        "operationId": "Get.api.colours",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "x-amz-server-side-encryption": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Cache": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Pop": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Amz-Cf-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "colours": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "disclaimer": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-ms-generated-by": {
+    "toolName": "Dev Proxy",
+    "toolVersion": "0.19.1"
+  }
+}

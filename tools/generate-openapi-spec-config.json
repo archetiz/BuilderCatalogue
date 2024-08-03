@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/dev-proxy/main/schemas/v0.15.0/rc.schema.json",
+  "plugins": [
+    {
+      "name": "OpenApiSpecGeneratorPlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/dev-proxy-plugins.dll"
+    }
+  ],
+  "urlsToWatch": [ "https://d16m5wbro86fg2.cloudfront.net/*" ],
+  "rate": 0
+}

@@ -1,0 +1,28 @@
+{
+  "descriptionHash": "12FB3C10849982AC48C3D150BDB6DC7A5E6557549DAA4F50A0FE12F5D61CC77273FB0908804B7E0BED611A96D1103688CE79DBF3C652A2A338EADD535F68CA10",
+  "descriptionLocation": "../../OpenAPI/brickapi-spec.json",
+  "lockFileVersion": "1.0.0",
+  "kiotaVersion": "1.16.0",
+  "clientClassName": "BrickApiClient",
+  "clientNamespaceName": "BrickApi.Client",
+  "language": "CSharp",
+  "usesBackingStore": false,
+  "excludeBackwardCompatible": true,
+  "includeAdditionalData": true,
+  "disableSSLValidation": false,
+  "serializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonSerializationWriterFactory"
+  ],
+  "deserializers": [
+    "Microsoft.Kiota.Serialization.Json.JsonParseNodeFactory"
+  ],
+  "structuredMimeTypes": [
+    "application/json",
+    "text/plain;q=0.9",
+    "application/x-www-form-urlencoded;q=0.2",
+    "multipart/form-data;q=0.1"
+  ],
+  "includePatterns": [],
+  "excludePatterns": [],
+  "disabledValidationRules": []
+}
