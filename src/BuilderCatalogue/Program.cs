@@ -1,22 +1,33 @@
 using BrickApi.Client;
+using BuilderCatalogue.Managers;
 using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var authProvider = new AnonymousAuthenticationProvider();
-var adapter = new HttpClientRequestAdapter(authProvider);
-builder.Services.AddTransient(_ => new BrickApiClient(adapter));
+var apiAuthProvider = new AnonymousAuthenticationProvider();
+var apiAdapter = new HttpClientRequestAdapter(apiAuthProvider);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddTransient(_ => new BrickApiClient(apiAdapter))
+                .AddTransient<ISetDataManager, SetDataManager>()
+                .AddTransient<IUserDataManager, UserDataManager>()
+                .AddTransient<ISolutionsManager, SolutionsManager>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+static void MapEndpoints(WebApplication app)
+{
+    var solutionsManager = app.Services.GetRequiredService<ISolutionsManager>();
+    var assignmentsApi = app.MapGroup("api/assigments").WithTags("Assignments").WithOpenApi();
+    assignmentsApi.MapGet("/1", async () => await solutionsManager.SolveFirstAssignment());
+    assignmentsApi.MapGet("/2", async () => await solutionsManager.SolveSecondAssignment());
+    assignmentsApi.MapGet("/3", async () => await solutionsManager.SolveThirdAssignment());
+    assignmentsApi.MapGet("/4", async () => await solutionsManager.SolveFourthAssignment());
+}
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -25,8 +36,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+MapEndpoints(app);
 
-app.MapControllers();
-
-app.Run();
+await app.RunAsync();
