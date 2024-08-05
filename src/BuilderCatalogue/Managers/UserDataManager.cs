@@ -22,7 +22,7 @@ namespace BuilderCatalogue.Managers
             return await GetUserDataById(userSummary.Id);
         }
 
-        public async Task<UserData?> GetUserDataById(string id)
+        public virtual async Task<UserData?> GetUserDataById(string id)
         {
             var userDataById = await apiClient.Api.User.ById[id].GetAsync();
             return userDataById?.ToUserData();

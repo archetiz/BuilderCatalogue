@@ -22,7 +22,7 @@ namespace BuilderCatalogue.Managers
             return await GetSetDataById(setSummary.Id);
         }
 
-        public async Task<SetData?> GetSetDataById(string id)
+        public virtual async Task<SetData?> GetSetDataById(string id)
         {
             var setDataById = await apiClient.Api.Set.ById[id].GetAsync();
             return setDataById?.ToSetData();
