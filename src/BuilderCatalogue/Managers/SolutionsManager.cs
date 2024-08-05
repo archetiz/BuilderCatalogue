@@ -10,7 +10,7 @@ namespace BuilderCatalogue.Managers
             var userData = await userDataManager.GetUserDataByName(user);
 
             if (userData is null)
-                return Enumerable.Empty<string>();  // TODO: handle error
+                return [];  // TODO: handle error
 
             var buildableSets = new List<string>();
 
@@ -41,11 +41,11 @@ namespace BuilderCatalogue.Managers
 
             if (userData is null)
                 //return Results.NotFound("User not found");
-                return Enumerable.Empty<string>();  // TODO: handle error
+                return [];  // TODO: handle error
 
             if (setData is null)
                 //return Results.NotFound("Set not found");
-                return Enumerable.Empty<string>();  // TODO: handle error
+                return [];  // TODO: handle error
 
             var missingElements = new Dictionary<(string pieceId, string color), int>();
             foreach (var setPiece in setData.Pieces)
@@ -85,12 +85,6 @@ namespace BuilderCatalogue.Managers
 
         public async Task<IEnumerable<string>> SolveFourthAssignment()
         {
-            // collect possible substites for each piece in the set
-	        //   cycle through and check what color variants he has
-            // backtrack with original pieces + substitutes for each spot
-	        //   track the already used colors
-	        //   good case: if the color isn't used yet
-
             var username = "dr_crocodile";
             var userData = await userDataManager.GetUserDataByName(username);
             var sets = await setDataManager.GetAllSets();
