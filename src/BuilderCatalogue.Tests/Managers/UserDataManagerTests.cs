@@ -1,4 +1,5 @@
-﻿using BrickApi.Client;
+﻿using AutoFixture.Xunit2;
+using BrickApi.Client;
 using BrickApi.Client.Api.User.ById.Item;
 using BrickApi.Client.Api.User.ByUsername.Item;
 using BrickApi.Client.Api.Users;
@@ -26,32 +27,11 @@ namespace BuilderCatalogue.Tests.Managers
 
         private UserDataManager CreateManager() => new(_apiClient);
 
-        [Fact]
-        public async Task GetAllUsers_ReturnsFullListNormally()
+        [Theory, AutoData]
+        public async Task GetAllUsers_ReturnsFullListNormally(UsersGetResponse users)
         {
             // Arrange
-            var usersMock = new UsersGetResponse
-            {
-                Users =
-                [
-                    new()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Username = "TestUser1",
-                        BrickCount = 42,
-                        Location = "Here"
-                    },
-                    new()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Username = "TestUser2",
-                        BrickCount = 43,
-                        Location = "There"
-                    },
-                ]
-            };
-
-            MockGETRequestResult(usersMock);
+            MockGETRequestResult(users);
 
             var sut = CreateManager();
 
@@ -59,9 +39,8 @@ namespace BuilderCatalogue.Tests.Managers
             var result = await sut.GetAllUsers();
 
             // Assert
-            result.Should().Equal(usersMock.Users);
+            result.Should().Equal(users.Users);
         }
-
 
         [Fact]
         public async Task GetAllUsers_ReturnsEmptyListWhenResultIsNullOrNotFound()
@@ -78,39 +57,30 @@ namespace BuilderCatalogue.Tests.Managers
             result.Should().BeEmpty();
         }
 
-        [Fact]
-        public async Task GetUserDataByName_ShouldReturnDetailedUserDataIfFound()
+        [Theory, AutoData]
+        public async Task GetUserDataByName_ShouldReturnDetailedUserDataIfFound(WithUsernameGetResponse userDataRequestByNameResult, UserData userData)
         {
             // Arrange
-            var username = "TestUser";
-            
-            var userDataRequestByNameResult = new WithUsernameGetResponse
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = username
-            };
+            userDataRequestByNameResult.Id = userData.Id;
+            userDataRequestByNameResult.Username = userData.Name;
 
             MockGETRequestResult(userDataRequestByNameResult);
 
             var sut = new Mock<UserDataManager>(_apiClient);
 
-            var mockUserData = new UserData(userDataRequestByNameResult.Id, username, new Dictionary<(string pieceId, string color), int> { { ("123", "45"), 1 } });
-
-            sut.Setup(udm => udm.GetUserDataById(userDataRequestByNameResult.Id)).ReturnsAsync(mockUserData);
+            sut.Setup(udm => udm.GetUserDataById(userDataRequestByNameResult.Id)).ReturnsAsync(userData);
 
             // Act
-            var result = await sut.Object.GetUserDataByName(username);
+            var result = await sut.Object.GetUserDataByName(userData.Name);
 
             // Assert
-            result.Should().BeEquivalentTo(mockUserData);
+            result.Should().BeEquivalentTo(userData);
         }
 
-        [Fact]
-        public async Task GetUserDataByName_ShouldReturnNullIfUserIsNotFound()
+        [Theory, AutoData]
+        public async Task GetUserDataByName_ShouldReturnNullIfUserIsNotFound(string username)
         {
             // Arrange
-            var username = "TestUser";
-
             MockGETRequestResult<WithUsernameGetResponse?>(null);
 
             var sut = CreateManager();
@@ -122,19 +92,12 @@ namespace BuilderCatalogue.Tests.Managers
             result.Should().BeNull();
         }
 
-        [Fact]
-        public async Task GetUserDataById_ShouldReturnDetailedUserDataIfFound()
+        [Theory, AutoData]
+        public async Task GetUserDataById_ShouldReturnDetailedUserDataIfFound(ByIdGetResponse userDataRequestByIdResult)
         {
             // Arrange
-            var userId = Guid.NewGuid().ToString();
-
-            var userDataRequestByIdResult = new ByIdGetResponse
-            {
-                Id = userId,
-                Username = "TestUser",
-                Location = "Location",
-                BrickCount = 105,
-                Collection = [
+            userDataRequestByIdResult.Collection =
+                [
                     new() {
                        PieceId = "100",
                        Variants = [
@@ -157,18 +120,17 @@ namespace BuilderCatalogue.Tests.Managers
                             }
                         ]
                     }
-                ]
-            };
+                ];
 
             MockGETRequestResult(userDataRequestByIdResult);
 
             var sut = CreateManager();
 
             // Act
-            var result = await sut.GetUserDataById(userId);
+            var result = await sut.GetUserDataById(userDataRequestByIdResult.Id!);
 
             // Assert
-            var expectedResult = new UserData(userDataRequestByIdResult.Id, userDataRequestByIdResult.Username, new Dictionary<(string pieceId, string color), int>
+            var expectedResult = new UserData(userDataRequestByIdResult.Id!, userDataRequestByIdResult.Username!, new Dictionary<(string pieceId, string color), int>
             {
                 { ("100", "1"), 2 },
                 { ("100", "2"), 3 },
@@ -178,18 +140,16 @@ namespace BuilderCatalogue.Tests.Managers
             result.Should().BeEquivalentTo(expectedResult);
         }
 
-        [Fact]
-        public async Task GetUserDataById_ShouldReturnNullIfUserIsNotFound()
+        [Theory, AutoData]
+        public async Task GetUserDataById_ShouldReturnNullIfUserIsNotFound(Guid userId)
         {
             // Arrange
-            var userId = Guid.NewGuid().ToString();
-
             MockGETRequestResult<ByIdGetResponse?>(null);
 
             var sut = CreateManager();
 
             // Act
-            var result = await sut.GetUserDataById(userId);
+            var result = await sut.GetUserDataById(userId.ToString());
 
             // Assert
             result.Should().BeNull();

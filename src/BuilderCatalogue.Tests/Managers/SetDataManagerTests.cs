@@ -1,4 +1,5 @@
-﻿using BrickApi.Client;
+﻿using AutoFixture.Xunit2;
+using BrickApi.Client;
 using BrickApi.Client.Api.Set.ById.Item;
 using BrickApi.Client.Api.Set.ByName.Item;
 using BrickApi.Client.Api.Sets;
@@ -25,6 +26,9 @@ namespace BuilderCatalogue.Tests.Managers
         }
 
         private SetDataManager CreateManager() => new(_apiClient);
+
+        // Note: wanted to use AutoData everywhere (where possible) in this class, but some of the manually written test data here ended up too nicely,
+        // and it would've made me sad to delete it, so decided to keep it, since this is only a demo project anyway
 
         [Fact]
         public async Task GetAllSets_ReturnsFullListNormally()
@@ -107,18 +111,16 @@ namespace BuilderCatalogue.Tests.Managers
             result.Should().BeEquivalentTo(mockSetData);
         }
 
-        [Fact]
-        public async Task GetSetDataByName_ShouldReturnNullIfSetIsNotFound()
+        [Theory, AutoData]
+        public async Task GetSetDataByName_ShouldReturnNullIfSetIsNotFound(string setName)
         {
             // Arrange
-            var setname = "TestSet";
-
             MockGETRequestResult<WithNameGetResponse?>(null);
 
             var sut = CreateManager();
 
             // Act
-            var result = await sut.GetSetDataByName(setname);
+            var result = await sut.GetSetDataByName(setName);
 
             // Assert
             result.Should().BeNull();
@@ -182,18 +184,16 @@ namespace BuilderCatalogue.Tests.Managers
             result.Should().BeEquivalentTo(expectedResult);
         }
 
-        [Fact]
-        public async Task GetSetDataById_ShouldReturnNullIfSetIsNotFound()
+        [Theory, AutoData]
+        public async Task GetSetDataById_ShouldReturnNullIfSetIsNotFound(Guid setId)
         {
             // Arrange
-            var setId = Guid.NewGuid().ToString();
-
             MockGETRequestResult<ByIdGetResponse?>(null);
 
             var sut = CreateManager();
 
             // Act
-            var result = await sut.GetSetDataById(setId);
+            var result = await sut.GetSetDataById(setId.ToString());
 
             // Assert
             result.Should().BeNull();
