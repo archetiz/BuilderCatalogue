@@ -4,9 +4,8 @@ namespace BuilderCatalogue.Managers
 {
     public class SolutionsManager(ISetDataManager setDataManager, IUserDataManager userDataManager, ILogger<SolutionsManager> logger) : ISolutionsManager
     {
-        public async Task<IEnumerable<string>> SolveFirstAssignment()
+        public async Task<IEnumerable<string>> SolveFirstAssignment(string user = "brickfan35")
         {
-            var user = "brickfan35";
             var userData = await userDataManager.GetUserDataByName(user);
 
             if (userData is null)
@@ -98,7 +97,9 @@ namespace BuilderCatalogue.Managers
                     buildableSets.Add(setData.Name);
             });
 
-            return buildableSets;
+            var previouslyBuildableSets = await SolveFirstAssignment(username) ?? [];
+
+            return buildableSets.Except(previouslyBuildableSets);
         }
 
         private static bool IsSetBuildableWithDifferentColors(SetData setData, UserData userData)
