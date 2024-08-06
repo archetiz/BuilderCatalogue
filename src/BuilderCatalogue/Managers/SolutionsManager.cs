@@ -4,9 +4,9 @@ namespace BuilderCatalogue.Managers
 {
     public class SolutionsManager(ISetDataManager setDataManager, IUserDataManager userDataManager, ILogger<SolutionsManager> logger) : ISolutionsManager
     {
-        public async Task<IEnumerable<string>> SolveFirstAssignment(string user = "brickfan35")
+        public async Task<IEnumerable<string>> SolveFirstAssignment(string username = "brickfan35")
         {
-            var userData = await userDataManager.GetUserDataByName(user);
+            var userData = await userDataManager.GetUserDataByName(username);
 
             if (userData is null)
                 return [];  // TODO: handle error
@@ -16,6 +16,9 @@ namespace BuilderCatalogue.Managers
             var sets = await setDataManager.GetAllSets();
             foreach (var set in sets)
             {
+                if (set?.Id is null || set.Name is null)
+                    continue;
+
                 var setData = await setDataManager.GetSetDataById(set.Id);
                 if (setData is null)
                 {
@@ -30,13 +33,10 @@ namespace BuilderCatalogue.Managers
             return buildableSets;
         }
 
-        public async Task<IEnumerable<string>> SolveSecondAssignment()
+        public async Task<IEnumerable<string>> SolveSecondAssignment(string username = "landscape-artist", string setName = "tropical-island")
         {
-            var username = "landscape-artist";
-            var set = "tropical-island";
-
             var userData = await userDataManager.GetUserDataByName(username);
-            var setData = await setDataManager.GetSetDataByName(set);
+            var setData = await setDataManager.GetSetDataByName(setName);
 
             if (userData is null)
                 //return Results.NotFound("User not found");
@@ -64,11 +64,11 @@ namespace BuilderCatalogue.Managers
             var users = await userDataManager.GetAllUsers();
             foreach (var user in users)
             {
-                if (user.Id == userData.Id)
+                if (user?.Id is null || user.Username is null || user.Id == userData.Id)
                     continue;
 
                 var otherUserData = await userDataManager.GetUserDataById(user.Id);
-                if (CanBuildSet(otherUserData.Collection, missingElements))
+                if (CanBuildSet(otherUserData?.Collection ?? [], missingElements))
                 {
                     usersToCollaborate.Add(user.Username);
                 }
@@ -77,23 +77,26 @@ namespace BuilderCatalogue.Managers
             return usersToCollaborate;
         }
 
-        public async Task<int> SolveThirdAssignment()
+        public int SolveThirdAssignment()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<string>> SolveFourthAssignment()
+        public async Task<IEnumerable<string>> SolveFourthAssignment(string username = "dr_crocodile")
         {
-            var username = "dr_crocodile";
             var userData = await userDataManager.GetUserDataByName(username);
+
             var sets = await setDataManager.GetAllSets();
 
             var buildableSets = new List<string>();
 
             await Parallel.ForEachAsync(sets, async (set, _) =>
             {
+                if (set?.Id is null)
+                    return;
+
                 var setData = await setDataManager.GetSetDataById(set.Id);
-                if (IsSetBuildableWithDifferentColors(setData, userData))
+                if (IsSetBuildableWithDifferentColors(setData, userData) && setData?.Name is not null)
                     buildableSets.Add(setData.Name);
             });
 
@@ -102,8 +105,11 @@ namespace BuilderCatalogue.Managers
             return buildableSets.Except(previouslyBuildableSets);
         }
 
-        private static bool IsSetBuildableWithDifferentColors(SetData setData, UserData userData)
+        private static bool IsSetBuildableWithDifferentColors(SetData? setData, UserData? userData)
         {
+            if (setData?.Pieces is null || userData?.Collection is null)
+                return false;
+
             var possibleColorSubstitutes = new Dictionary<(string pieceId, string color), IEnumerable<string>>();
             foreach (var piece in setData.Pieces)
             {
