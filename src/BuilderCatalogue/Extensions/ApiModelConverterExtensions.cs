@@ -14,7 +14,7 @@ namespace BuilderCatalogue.Extensions
             {
                 foreach (var variant in piece?.Variants ?? [])
                 {
-                    if (piece?.PieceId is null || variant?.Color is null || variant?.Count is null)
+                    if (piece?.PieceId is null || variant?.Color is null || variant.Count is null)
                         continue;
 
                     userCollection[(piece.PieceId, variant.Color)] = (int)variant.Count;

@@ -64,7 +64,7 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
             _userDataManagerMock.Setup(udm => udm.GetAllUsers()).ReturnsAsync(users);
-            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.Where(ud => ud.Id == id).SingleOrDefault());
+            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.SingleOrDefault(ud => ud.Id == id));
 
             var sut = CreateManager();
 
@@ -125,7 +125,7 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
             _userDataManagerMock.Setup(udm => udm.GetAllUsers()).ReturnsAsync(users);
-            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.Where(ud => ud.Id == id).SingleOrDefault());
+            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.SingleOrDefault(ud => ud.Id == id));
 
             var sut = CreateManager();
 
@@ -186,7 +186,7 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
             _userDataManagerMock.Setup(udm => udm.GetAllUsers()).ReturnsAsync(users);
-            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.Where(ud => ud.Id == id).SingleOrDefault());
+            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.SingleOrDefault(ud => ud.Id == id));
 
             var sut = CreateManager();
 
@@ -241,7 +241,7 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
             _userDataManagerMock.Setup(udm => udm.GetAllUsers()).ReturnsAsync(users);
-            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.Where(ud => ud.Id == id).SingleOrDefault());
+            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.SingleOrDefault(ud => ud.Id == id));
 
             var sut = CreateManager();
 
@@ -298,7 +298,7 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
             _userDataManagerMock.Setup(udm => udm.GetAllUsers()).ReturnsAsync(users);
-            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.Where(ud => ud.Id == id).SingleOrDefault());
+            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.SingleOrDefault(ud => ud.Id == id));
 
             var sut = CreateManager();
 
@@ -354,7 +354,7 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
             _userDataManagerMock.Setup(udm => udm.GetAllUsers()).ReturnsAsync(users);
-            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.Where(ud => ud.Id == id).SingleOrDefault());
+            _userDataManagerMock.Setup(sdm => sdm.GetUserDataById(It.IsAny<string>())).ReturnsAsync((string id) => usersData.SingleOrDefault(ud => ud.Id == id));
 
             var sut = CreateManager();
 

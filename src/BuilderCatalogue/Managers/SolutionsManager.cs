@@ -47,13 +47,13 @@ namespace BuilderCatalogue.Managers
             var missingElements = new Dictionary<(string pieceId, string color), int>();
             foreach (var setPiece in setData.Pieces)
             {
-                if (!userData.Collection.ContainsKey(setPiece.Key))
+                if (!userData.Collection.TryGetValue(setPiece.Key, out int userCollectionPieceAmount))
                 {
                     missingElements[setPiece.Key] = setPiece.Value;
                 }
-                else if (userData.Collection[setPiece.Key] < setPiece.Value)
+                else if (userCollectionPieceAmount < setPiece.Value)
                 {
-                    missingElements[setPiece.Key] = userData.Collection[setPiece.Key] - setPiece.Value;
+                    missingElements[setPiece.Key] = userCollectionPieceAmount - setPiece.Value;
                 }
             }
 
@@ -113,7 +113,7 @@ namespace BuilderCatalogue.Managers
             {
                 possibleColorSubstitutes[piece.Key] = userData.Collection.Where(p => p.Key.pieceId == piece.Key.pieceId && p.Value >= piece.Value).Select(p => p.Key.color).ToList();
 
-                if (possibleColorSubstitutes[piece.Key].Count() == 0)
+                if (!possibleColorSubstitutes[piece.Key].Any())
                     return false;
             }
 
@@ -125,12 +125,13 @@ namespace BuilderCatalogue.Managers
             {
                 var currentElement = setData.Pieces.ElementAt(i).Key;
                 var isInitialValuePresent = true;
-                if (!usedElements.ContainsKey(currentElement))
+                if (!usedElements.TryGetValue(currentElement, out int originalColorIndex))
                 {
                     usedElements[currentElement] = 0;
+                    originalColorIndex = usedElements[currentElement];
                     isInitialValuePresent = false;
                 }
-                var originalColorIndex = usedElements[currentElement];
+
                 if (PossibleSubstitutePieceExists(currentElement, usedElements, possibleColorSubstitutes, usedColors))
                 {
                     usedColors.Add(possibleColorSubstitutes[currentElement].ElementAt(usedElements[currentElement]));

@@ -14,6 +14,10 @@
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.10.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.10.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.31.0.96804">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
   </ItemGroup>
 
