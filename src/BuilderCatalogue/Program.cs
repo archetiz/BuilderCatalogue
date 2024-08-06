@@ -13,6 +13,7 @@ builder.Services.AddTransient(_ => new BrickApiClient(apiAdapter))
                 .AddTransient<IUserDataManager, UserDataManager>()
                 .AddTransient<ISolutionsManager, SolutionsManager>();
 
+builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -30,8 +31,13 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseExceptionHandler();
 }
 
 app.UseHttpsRedirection();

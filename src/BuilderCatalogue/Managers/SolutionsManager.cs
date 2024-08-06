@@ -9,7 +9,7 @@ namespace BuilderCatalogue.Managers
             var userData = await userDataManager.GetUserDataByName(username);
 
             if (userData is null)
-                return [];  // TODO: handle error
+                return [];
 
             var buildableSets = new List<string>();
 
@@ -39,12 +39,10 @@ namespace BuilderCatalogue.Managers
             var setData = await setDataManager.GetSetDataByName(setName);
 
             if (userData is null)
-                //return Results.NotFound("User not found");
-                return [];  // TODO: handle error
+                return [];
 
             if (setData is null)
-                //return Results.NotFound("Set not found");
-                return [];  // TODO: handle error
+                return [];
 
             var missingElements = new Dictionary<(string pieceId, string color), int>();
             foreach (var setPiece in setData.Pieces)
