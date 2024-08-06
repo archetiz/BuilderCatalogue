@@ -53,7 +53,7 @@ namespace BuilderCatalogue.Managers
                 }
                 else if (userCollectionPieceAmount < setPiece.Value)
                 {
-                    missingElements[setPiece.Key] = userCollectionPieceAmount - setPiece.Value;
+                    missingElements[setPiece.Key] = setPiece.Value - userCollectionPieceAmount;
                 }
             }
 
