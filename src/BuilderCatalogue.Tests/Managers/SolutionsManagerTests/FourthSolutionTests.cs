@@ -19,20 +19,20 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task ExampleScenarioFromAssignmentDescription()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("wall", "red"), 4 },
-                { ("roof", "blue"), 1 },
-                { ("flag", "green"), 1 },
+                { new("wall", "red"), 4 },
+                { new("roof", "blue"), 1 },
+                { new("flag", "green"), 1 },
             });
 
             var sets = new List<SetsGetResponse_Sets>() { new() { Id = Guid.NewGuid().ToString(), Name = "building" } };
 
-            var setData = new SetData(sets[0].Id!, sets[0].Name!, new Dictionary<(string pieceId, string color), int>
+            var setData = new SetData(sets[0].Id!, sets[0].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("wall", "white"), 4 },
-                { ("roof", "red"), 1 },
-                { ("flag", "green"), 1 },
+                { new("wall", "white"), 4 },
+                { new("roof", "red"), 1 },
+                { new("flag", "green"), 1 },
             });
 
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
@@ -52,11 +52,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task OneOfMultipleSetsIsNewlyBuildable()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             var setCount = 3;
@@ -68,19 +68,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var setsData = new SetData[setCount];
 
-            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "100"), 2 },
-                { ("100", "1"), 3 },
-                { ("300", "2"), 100 },
+                { new("100", "100"), 2 },
+                { new("100", "1"), 3 },
+                { new("300", "2"), 100 },
             });
-            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
+                { new("1", "1"), 1 },
             });
-            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "2"), 2 },
+                { new("2", "2"), 2 },
             });
 
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
@@ -100,11 +100,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task PreviouslyBuildableSetIsNotNewlyBuildable()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             var setCount = 3;
@@ -116,19 +116,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var setsData = new SetData[setCount];
 
-            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
-            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
+                { new("1", "1"), 1 },
             });
-            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "2"), 2 },
+                { new("2", "2"), 2 },
             });
 
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
@@ -148,11 +148,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task MultipleSetsAreNewlyBuildable()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             var setCount = 3;
@@ -164,21 +164,21 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var setsData = new SetData[setCount];
 
-            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "100"), 2 },
-                { ("100", "1"), 3 },
-                { ("300", "2"), 100 },
+                { new("100", "100"), 2 },
+                { new("100", "1"), 3 },
+                { new("300", "2"), 100 },
             });
-            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "2"), 1 },
-                { ("100", "100"), 2 },
-                { ("300", "1"), 50 },
+                { new("100", "2"), 1 },
+                { new("100", "100"), 2 },
+                { new("300", "1"), 50 },
             });
-            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "2"), 2 },
+                { new("2", "2"), 2 },
             });
 
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
@@ -198,11 +198,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task SameColourCanNotBeUsedTwice()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "2"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "2"), 100 },
             });
 
             var setCount = 3;
@@ -214,21 +214,21 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var setsData = new SetData[setCount];
 
-            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "100"), 2 },
-                { ("100", "1"), 3 },
-                { ("300", "2"), 100 },
+                { new("100", "100"), 2 },
+                { new("100", "1"), 3 },
+                { new("300", "2"), 100 },
             });
-            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "2"), 1 },
-                { ("100", "100"), 1 },
-                { ("300", "1"), 1 },
+                { new("100", "2"), 1 },
+                { new("100", "100"), 1 },
+                { new("300", "1"), 1 },
             });
-            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "2"), 2 },
+                { new("2", "2"), 2 },
             });
 
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
@@ -248,11 +248,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task NoneOfTheSetsIsBuildable()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             var setCount = 3;
@@ -264,19 +264,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var setsData = new SetData[setCount];
 
-            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[0] = new(sets[0].Id!, sets[0].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "100"), 2 },
-                { ("300", "1"), 3 },
-                { ("4", "2"), 100 },
+                { new("100", "100"), 2 },
+                { new("300", "1"), 3 },
+                { new("4", "2"), 100 },
             });
-            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[1] = new(sets[1].Id!, sets[1].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
+                { new("1", "1"), 1 },
             });
-            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<(string pieceId, string color), int>
+            setsData[2] = new(sets[2].Id!, sets[2].Name!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "2"), 2 },
+                { new("2", "2"), 2 },
             });
 
             _userDataManagerMock.Setup(udm => udm.GetUserDataByName(It.IsAny<string>())).ReturnsAsync(userData);
@@ -295,11 +295,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task EmptyListOfSets()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             var sets = new List<SetsGetResponse_Sets>();
@@ -320,11 +320,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
         public async Task SetHasNoElements()
         {
             // Arrange
-            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), "dr_crocodile", new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             var sets = new List<SetsGetResponse_Sets>() { new() { Id = Guid.NewGuid().ToString(), Name = "set" } };

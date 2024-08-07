@@ -44,7 +44,7 @@ namespace BuilderCatalogue.Managers
             if (setData is null)
                 return [];
 
-            var missingElements = new Dictionary<(string pieceId, string color), int>();
+            var missingElements = new Dictionary<ColouredPiece, int>();
             foreach (var setPiece in setData.Pieces)
             {
                 if (!userData.Collection.TryGetValue(setPiece.Key, out int userCollectionPieceAmount))
@@ -108,10 +108,10 @@ namespace BuilderCatalogue.Managers
             if (setData?.Pieces is null || userData?.Collection is null)
                 return false;
 
-            var possibleColorSubstitutes = new Dictionary<(string pieceId, string color), IEnumerable<string>>();
+            var possibleColorSubstitutes = new Dictionary<ColouredPiece, IEnumerable<string>>();
             foreach (var piece in setData.Pieces)
             {
-                possibleColorSubstitutes[piece.Key] = userData.Collection.Where(p => p.Key.pieceId == piece.Key.pieceId && p.Value >= piece.Value).Select(p => p.Key.color).ToList();
+                possibleColorSubstitutes[piece.Key] = userData.Collection.Where(p => p.Key.PieceId == piece.Key.PieceId && p.Value >= piece.Value).Select(p => p.Key.Colour).ToList();
 
                 if (!possibleColorSubstitutes[piece.Key].Any())
                     return false;
@@ -119,7 +119,7 @@ namespace BuilderCatalogue.Managers
 
             var i = 0;
             var usedColors = new HashSet<string>();
-            var usedElements = new Dictionary<(string pieceId, string color), int>();
+            var usedElements = new Dictionary<ColouredPiece, int>();
             var elementsCount = setData.Pieces.Count;
             while (i >= 0 && i < elementsCount)
             {
@@ -152,9 +152,9 @@ namespace BuilderCatalogue.Managers
             return false;
         }
 
-        private static bool PossibleSubstitutePieceExists((string pieceId, string color) currentElement,
-                                    Dictionary<(string pieceId, string color), int> usedElements,
-                                    Dictionary<(string pieceId, string color), IEnumerable<string>> possibleColorSubstitutes,
+        private static bool PossibleSubstitutePieceExists(ColouredPiece currentElement,
+                                    Dictionary<ColouredPiece, int> usedElements,
+                                    Dictionary<ColouredPiece, IEnumerable<string>> possibleColorSubstitutes,
                                     HashSet<string> usedColors)
         {
             var possibleSubstitutesCount = possibleColorSubstitutes[currentElement].Count();
@@ -165,7 +165,7 @@ namespace BuilderCatalogue.Managers
             return usedElements[currentElement] < possibleSubstitutesCount;
         }
 
-        private static bool CanBuildSet(Dictionary<(string pieceId, string color), int> userCollection, Dictionary<(string pieceId, string color), int> setPieces)
+        private static bool CanBuildSet(Dictionary<ColouredPiece, int> userCollection, Dictionary<ColouredPiece, int> setPieces)
             => !setPieces.Any(p => !userCollection.ContainsKey(p.Key) || userCollection[p.Key] < p.Value);
     }
 }

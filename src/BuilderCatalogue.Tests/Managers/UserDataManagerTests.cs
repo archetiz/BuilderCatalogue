@@ -130,11 +130,11 @@ namespace BuilderCatalogue.Tests.Managers
             var result = await sut.GetUserDataById(userDataRequestByIdResult.Id!);
 
             // Assert
-            var expectedResult = new UserData(userDataRequestByIdResult.Id!, userDataRequestByIdResult.Username!, new Dictionary<(string pieceId, string color), int>
+            var expectedResult = new UserData(userDataRequestByIdResult.Id!, userDataRequestByIdResult.Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             result.Should().BeEquivalentTo(expectedResult);

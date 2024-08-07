@@ -100,7 +100,7 @@ namespace BuilderCatalogue.Tests.Managers
 
             var sut = new Mock<SetDataManager>(_apiClient);
 
-            var mockSetData = new SetData(setDataRequestByNameResult.Id, setname, new Dictionary<(string pieceId, string color), int> { { ("123", "45"), 6 } });
+            var mockSetData = new SetData(setDataRequestByNameResult.Id, setname, new Dictionary<ColouredPiece, int> { { new("123", "45"), 6 } });
 
             sut.Setup(udm => udm.GetSetDataById(setDataRequestByNameResult.Id)).ReturnsAsync(mockSetData);
 
@@ -174,11 +174,11 @@ namespace BuilderCatalogue.Tests.Managers
             var result = await sut.GetSetDataById(setId);
 
             // Assert
-            var expectedResult = new SetData(setDataRequestByIdResult.Id, setDataRequestByIdResult.Name, new Dictionary<(string pieceId, string color), int>
+            var expectedResult = new SetData(setDataRequestByIdResult.Id, setDataRequestByIdResult.Name, new Dictionary<ColouredPiece, int>
             {
-                { ("0", "12"), 0 },
-                { ("1", "21"), 1 },
-                { ("2", "21"), 4 },
+                { new("0", "12"), 0 },
+                { new("1", "21"), 1 },
+                { new("2", "21"), 4 },
             });
 
             result.Should().BeEquivalentTo(expectedResult);

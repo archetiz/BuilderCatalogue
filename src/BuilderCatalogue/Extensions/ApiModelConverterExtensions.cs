@@ -9,7 +9,7 @@ namespace BuilderCatalogue.Extensions
             if (userResponse?.Id is null || userResponse.Username is null)
                 return null;
 
-            var userCollection = new Dictionary<(string pieceId, string color), int>();
+            var userCollection = new Dictionary<ColouredPiece, int>();
             foreach (var piece in userResponse.Collection ?? [])
             {
                 foreach (var variant in piece?.Variants ?? [])
@@ -17,7 +17,7 @@ namespace BuilderCatalogue.Extensions
                     if (piece?.PieceId is null || variant?.Color is null || variant.Count is null)
                         continue;
 
-                    userCollection[(piece.PieceId, variant.Color)] = (int)variant.Count;
+                    userCollection[new(piece.PieceId, variant.Color)] = (int)variant.Count;
                 }
             }
 
@@ -29,13 +29,13 @@ namespace BuilderCatalogue.Extensions
             if (setResponse.Id is null || setResponse.Name is null)
                 return null;
 
-            var setPieces = new Dictionary<(string pieceId, string color), int>();
+            var setPieces = new Dictionary<ColouredPiece, int>();
             foreach (var piece in setResponse.Pieces ?? [])
             {
                 if (piece?.Part?.DesignID is null || piece.Part.Material is null || piece.Quantity is null)
                     continue;
 
-                setPieces[(piece.Part.DesignID, ((int)piece.Part.Material).ToString())] = (int)piece.Quantity;
+                setPieces[new(piece.Part.DesignID, ((int)piece.Part.Material).ToString())] = (int)piece.Quantity;
             }
 
             return new SetData(setResponse.Id, setResponse.Name, setPieces);

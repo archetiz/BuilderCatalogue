@@ -22,19 +22,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             var username = "landscape-artist";
             var setName = "tropical-island";
 
-            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
-            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<(string pieceId, string color), int>
+            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("100", "1"), 2 },
-                { ("300", "100"), 50 },
-                { ("4", "2"), 3 },
+                { new("1", "1"), 1 },
+                { new("100", "1"), 2 },
+                { new("300", "100"), 50 },
+                { new("4", "2"), 3 },
             });
 
             var usersCount = 3;
@@ -46,19 +46,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var usersData = new UserData[usersCount];
 
-            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
+                { new("1", "1"), 1 },
             });
-            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "1"), 42 },
+                { new("2", "1"), 42 },
             });
-            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("4", "2"), 3 },
-                { ("300", "100"), 20 },
+                { new("1", "1"), 1 },
+                { new("4", "2"), 3 },
+                { new("300", "100"), 20 },
             });
 
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
@@ -82,19 +82,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             var username = "landscape-artist";
             var setName = "tropical-island";
 
-            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
-            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<(string pieceId, string color), int>
+            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("100", "1"), 2 },
-                { ("300", "100"), 50 },
-                { ("4", "2"), 3 },
+                { new("1", "1"), 1 },
+                { new("100", "1"), 2 },
+                { new("300", "100"), 50 },
+                { new("4", "2"), 3 },
             });
 
             var usersCount = 3;
@@ -106,20 +106,20 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var usersData = new UserData[usersCount];
 
-            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("4", "2"), 4 },
+                { new("1", "1"), 1 },
+                { new("4", "2"), 4 },
             });
-            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "1"), 42 },
+                { new("2", "1"), 42 },
             });
-            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("4", "2"), 3 },
-                { ("5", "100"), 10 },
+                { new("1", "1"), 1 },
+                { new("4", "2"), 3 },
+                { new("5", "100"), 10 },
             });
 
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
@@ -144,19 +144,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             var username = "landscape-artist";
             var setName = "tropical-island";
 
-            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
-            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<(string pieceId, string color), int>
+            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("100", "1"), 2 },
-                { ("300", "100"), 50 },
-                { ("4", "2"), 3 },
+                { new("1", "1"), 1 },
+                { new("100", "1"), 2 },
+                { new("300", "100"), 50 },
+                { new("4", "2"), 3 },
             });
 
             var usersCount = 3;
@@ -168,19 +168,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var usersData = new UserData[usersCount];
 
-            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "2"), 1 },
-                { ("4", "4"), 4 },
+                { new("1", "2"), 1 },
+                { new("4", "4"), 4 },
             });
-            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "1"), 42 },
+                { new("2", "1"), 42 },
             });
-            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("5", "100"), 10 },
+                { new("1", "1"), 1 },
+                { new("5", "100"), 10 },
             });
 
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
@@ -206,12 +206,12 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var userData = new UserData(Guid.NewGuid().ToString(), username, []);
 
-            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<(string pieceId, string color), int>
+            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("100", "1"), 2 },
-                { ("300", "100"), 50 },
-                { ("4", "2"), 3 },
+                { new("1", "1"), 1 },
+                { new("100", "1"), 2 },
+                { new("300", "100"), 50 },
+                { new("4", "2"), 3 },
             });
 
             var usersCount = 3;
@@ -223,19 +223,19 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var usersData = new UserData[usersCount];
 
-            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "2"), 1 },
-                { ("4", "4"), 4 },
+                { new("1", "2"), 1 },
+                { new("4", "4"), 4 },
             });
-            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "1"), 42 },
+                { new("2", "1"), 42 },
             });
-            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("5", "100"), 10 },
+                { new("1", "1"), 1 },
+                { new("5", "100"), 10 },
             });
 
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
@@ -261,12 +261,12 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var userData = new UserData(Guid.NewGuid().ToString(), username, []);
 
-            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<(string pieceId, string color), int>
+            var setData = new SetData(Guid.NewGuid().ToString(), setName, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("100", "1"), 2 },
-                { ("300", "100"), 50 },
-                { ("4", "2"), 3 },
+                { new("1", "1"), 1 },
+                { new("100", "1"), 2 },
+                { new("300", "100"), 50 },
+                { new("4", "2"), 3 },
             });
 
             var usersCount = 3;
@@ -278,21 +278,21 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var usersData = new UserData[usersCount];
 
-            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("100", "1"), 2 },
-                { ("300", "100"), 50 },
-                { ("4", "2"), 3 },
+                { new("1", "1"), 1 },
+                { new("100", "1"), 2 },
+                { new("300", "100"), 50 },
+                { new("4", "2"), 3 },
             });
-            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "1"), 42 },
+                { new("2", "1"), 42 },
             });
-            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("5", "100"), 10 },
+                { new("1", "1"), 1 },
+                { new("5", "100"), 10 },
             });
 
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
@@ -316,11 +316,11 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
             var username = "landscape-artist";
             var setName = "tropical-island";
 
-            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<(string pieceId, string color), int>
+            var userData = new UserData(Guid.NewGuid().ToString(), username, new Dictionary<ColouredPiece, int>
             {
-                { ("100", "1"), 2 },
-                { ("100", "2"), 3 },
-                { ("300", "100"), 100 },
+                { new("100", "1"), 2 },
+                { new("100", "2"), 3 },
+                { new("300", "100"), 100 },
             });
 
             var setData = new SetData(Guid.NewGuid().ToString(), setName, []);
@@ -334,21 +334,21 @@ namespace BuilderCatalogue.Tests.Managers.SolutionsManagerTests
 
             var usersData = new UserData[usersCount];
 
-            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[0] = new(users[0].Id!, users[0].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("100", "1"), 2 },
-                { ("300", "100"), 50 },
-                { ("4", "2"), 3 },
+                { new("1", "1"), 1 },
+                { new("100", "1"), 2 },
+                { new("300", "100"), 50 },
+                { new("4", "2"), 3 },
             });
-            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[1] = new(users[1].Id!, users[1].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("2", "1"), 42 },
+                { new("2", "1"), 42 },
             });
-            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<(string pieceId, string color), int>
+            usersData[2] = new(users[2].Id!, users[2].Username!, new Dictionary<ColouredPiece, int>
             {
-                { ("1", "1"), 1 },
-                { ("5", "100"), 10 },
+                { new("1", "1"), 1 },
+                { new("5", "100"), 10 },
             });
 
             _setDataManagerMock.Setup(sdm => sdm.GetSetDataByName(setName)).ReturnsAsync(setData);
