@@ -5,7 +5,7 @@ namespace BuilderCatalogue.Managers
     {
         Task<IEnumerable<string>> SolveFirstAssignment(string username = "brickfan35");
         Task<IEnumerable<string>> SolveSecondAssignment(string username = "landscape-artist", string setName = "tropical-island");
-        int SolveThirdAssignment();
+        Task<int> SolveThirdAssignment(string username = "megabuilder99");
         Task<IEnumerable<string>> SolveFourthAssignment(string username = "dr_crocodile");
     }
 }

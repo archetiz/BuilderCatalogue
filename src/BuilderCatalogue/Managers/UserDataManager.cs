@@ -13,6 +13,26 @@ namespace BuilderCatalogue.Managers
             return usersResponse?.Users ?? Enumerable.Empty<UsersGetResponse_Users>();
         }
 
+        public async Task<IEnumerable<UserData>> GetAllUsersDataWithDetails(params string[] except)
+        {
+            var users = await GetAllUsers();
+            var allUsersData = new List<UserData>();
+            foreach (var user in users)
+            {
+                if (user?.Id is null || except.Contains(user.Id))
+                    continue;
+
+                var otherUserData = await GetUserDataById(user.Id);
+
+                if (otherUserData?.Id is null)
+                    continue;
+
+                allUsersData.Add(otherUserData);
+            }
+
+            return allUsersData;
+        }
+
         public async Task<UserData?> GetUserDataByName(string username)
         {
             var userSummary = await apiClient.Api.User.ByUsername[username].GetAsync();
