@@ -94,7 +94,7 @@ namespace BuilderCatalogue.Managers
                     return;
 
                 var setData = await setDataManager.GetSetDataById(set.Id);
-                if (IsSetBuildableWithDifferentColors(setData, userData) && setData?.Name is not null)
+                if (IsSetBuildableWithDifferentColours(setData, userData) && setData?.Name is not null)
                     buildableSets.Add(setData.Name);
             });
 
@@ -103,44 +103,44 @@ namespace BuilderCatalogue.Managers
             return buildableSets.Except(previouslyBuildableSets);
         }
 
-        private static bool IsSetBuildableWithDifferentColors(SetData? setData, UserData? userData)
+        private static bool IsSetBuildableWithDifferentColours(SetData? setData, UserData? userData)
         {
             if (setData?.Pieces is null || userData?.Collection is null)
                 return false;
 
-            var possibleColorSubstitutes = new Dictionary<ColouredPiece, IEnumerable<string>>();
+            var possibleColourSubstitutes = new Dictionary<ColouredPiece, IEnumerable<string>>();
             foreach (var piece in setData.Pieces)
             {
-                possibleColorSubstitutes[piece.Key] = userData.Collection.Where(p => p.Key.PieceId == piece.Key.PieceId && p.Value >= piece.Value).Select(p => p.Key.Colour).ToList();
+                possibleColourSubstitutes[piece.Key] = userData.Collection.Where(p => p.Key.PieceId == piece.Key.PieceId && p.Value >= piece.Value).Select(p => p.Key.Colour).ToList();
 
-                if (!possibleColorSubstitutes[piece.Key].Any())
+                if (!possibleColourSubstitutes[piece.Key].Any())
                     return false;
             }
 
             var i = 0;
-            var usedColors = new HashSet<string>();
+            var usedColours = new HashSet<string>();
             var usedElements = new Dictionary<ColouredPiece, int>();
             var elementsCount = setData.Pieces.Count;
             while (i >= 0 && i < elementsCount)
             {
                 var currentElement = setData.Pieces.ElementAt(i).Key;
                 var isInitialValuePresent = true;
-                if (!usedElements.TryGetValue(currentElement, out int originalColorIndex))
+                if (!usedElements.TryGetValue(currentElement, out int originalColourIndex))
                 {
                     usedElements[currentElement] = 0;
-                    originalColorIndex = usedElements[currentElement];
+                    originalColourIndex = usedElements[currentElement];
                     isInitialValuePresent = false;
                 }
 
-                if (PossibleSubstitutePieceExists(currentElement, usedElements, possibleColorSubstitutes, usedColors))
+                if (UsePossibleSubstitutePieceIfExists(currentElement, usedElements, possibleColourSubstitutes, usedColours))
                 {
-                    usedColors.Add(possibleColorSubstitutes[currentElement].ElementAt(usedElements[currentElement]));
+                    usedColours.Add(possibleColourSubstitutes[currentElement].ElementAt(usedElements[currentElement]));
                     i++;
                 }
                 else
                 {
                     if (isInitialValuePresent)
-                        usedColors.Remove(possibleColorSubstitutes[currentElement].ElementAt(originalColorIndex));
+                        usedColours.Remove(possibleColourSubstitutes[currentElement].ElementAt(originalColourIndex));
                     usedElements.Remove(currentElement);
                     i--;
                 }
@@ -152,13 +152,13 @@ namespace BuilderCatalogue.Managers
             return false;
         }
 
-        private static bool PossibleSubstitutePieceExists(ColouredPiece currentElement,
+        private static bool UsePossibleSubstitutePieceIfExists(ColouredPiece currentElement,
                                     Dictionary<ColouredPiece, int> usedElements,
-                                    Dictionary<ColouredPiece, IEnumerable<string>> possibleColorSubstitutes,
-                                    HashSet<string> usedColors)
+                                    Dictionary<ColouredPiece, IEnumerable<string>> possibleColourSubstitutes,
+                                    HashSet<string> usedColours)
         {
-            var possibleSubstitutesCount = possibleColorSubstitutes[currentElement].Count();
-            while (usedElements[currentElement] < possibleSubstitutesCount && usedColors.Contains(possibleColorSubstitutes[currentElement].ElementAt(usedElements[currentElement])))
+            var possibleSubstitutesCount = possibleColourSubstitutes[currentElement].Count();
+            while (usedElements[currentElement] < possibleSubstitutesCount && usedColours.Contains(possibleColourSubstitutes[currentElement].ElementAt(usedElements[currentElement])))
             {
                 usedElements[currentElement]++;
             }
