@@ -75,9 +75,51 @@ namespace BuilderCatalogue.Managers
             return usersToCollaborate;
         }
 
-        public int SolveThirdAssignment()
+        public async Task<int> SolveThirdAssignment(string username = "megabuilder99")
         {
-            throw new NotImplementedException();
+            var userData = await userDataManager.GetUserDataByName(username);
+
+            if (userData is null)
+                return 0;
+
+            var allUsersData = await userDataManager.GetAllUsersDataWithDetails();
+            var halfOfUsers = (int)Math.Floor((double)allUsersData.Count() / 2);
+
+            var allPiecesWithCounts = GenerateListOfAllPiecesWithAllPossibleAmounts(allUsersData, userData);
+
+            var pieceExcludesUsersCount = GetHowManyUsersEachPieceExcludes(allPiecesWithCounts, allUsersData);
+
+            var table = new int[halfOfUsers, allPiecesWithCounts.Count];
+
+            for (var i = pieceExcludesUsersCount[0]; i < halfOfUsers; i++)
+                table[i, 0] = allPiecesWithCounts[0].Item2;
+
+            for (var j = 0; j < halfOfUsers; j++)
+            {
+                for (var i = 1; i < allPiecesWithCounts.Count; i++)
+                {
+                    table[j, i] = table[j, i - 1];
+                    if (pieceExcludesUsersCount[i] <= j)
+                    {
+                        var valueWithAddingNewItem = allPiecesWithCounts[i].Item1 != allPiecesWithCounts[i - 1].Item1
+                                                        ? table[j - pieceExcludesUsersCount[i], i - 1] + allPiecesWithCounts[i].Item2
+                                                        : table[j - pieceExcludesUsersCount[i], i - 1] - allPiecesWithCounts[i - 1].Item2 + allPiecesWithCounts[i].Item2;
+
+                        table[j, i] = int.Max(table[j, i], valueWithAddingNewItem);
+                    }
+                }
+            }
+
+            var max = 0;
+            for (var j = 0; j < halfOfUsers; j++)
+            {
+                for (var i = 0; i < allPiecesWithCounts.Count; i++)
+                {
+                    max = int.Max(table[j, i], max);
+                }
+            }
+
+            return max;
         }
 
         public async Task<IEnumerable<string>> SolveFourthAssignment(string username = "dr_crocodile")
@@ -167,5 +209,58 @@ namespace BuilderCatalogue.Managers
 
         private static bool CanBuildSet(Dictionary<ColouredPiece, int> userCollection, Dictionary<ColouredPiece, int> setPieces)
             => !setPieces.Any(p => !userCollection.ContainsKey(p.Key) || userCollection[p.Key] < p.Value);
+
+        private static List<(ColouredPiece, int)> GenerateListOfAllPiecesWithAllPossibleAmounts(IEnumerable<UserData> allUsersData, UserData userData)
+        {
+            var minPieces = new Dictionary<ColouredPiece, int>();
+            var maxPieces = new Dictionary<ColouredPiece, int>();
+
+            foreach (var userPiece in userData.Collection)
+            {
+                minPieces[userPiece.Key] = 0;
+                maxPieces[userPiece.Key] = 0;
+                foreach (var otherUserData in allUsersData)
+                {
+                    if (otherUserData.Collection.TryGetValue(userPiece.Key, out int quantity))
+                    {
+                        if (quantity < minPieces[userPiece.Key])
+                            minPieces[userPiece.Key] = int.Max(quantity, userPiece.Value);
+
+                        if (quantity > maxPieces[userPiece.Key])
+                            maxPieces[userPiece.Key] = int.Min(quantity, userPiece.Value);
+                    }
+                }
+            }
+
+            var allPieces = new List<(ColouredPiece, int)>();
+
+            foreach (var userPieceWithColour in userData.Collection.Select(userPiece => userPiece.Key))
+            {
+                for (var i = minPieces[userPieceWithColour]; i <= maxPieces[userPieceWithColour]; i++)
+                {
+                    allPieces.Add((userPieceWithColour, i));
+                }
+            }
+
+            return allPieces;
+        }
+
+        private static int[] GetHowManyUsersEachPieceExcludes(List<(ColouredPiece, int)>  allPiecesWithCounts, IEnumerable<UserData> allUsersData)
+        {
+            var pieceExcludesUsersCount = new int[allPiecesWithCounts.Count];
+            for (var i = 0; i < allPiecesWithCounts.Count; i++)
+            {
+                pieceExcludesUsersCount[i] = allUsersData.Count();
+                foreach (var otherUserData in allUsersData)
+                {
+                    if (otherUserData.Collection.TryGetValue(allPiecesWithCounts[i].Item1, out int quantity) && quantity >= allPiecesWithCounts[i].Item2)
+                    {
+                        pieceExcludesUsersCount[i]--;
+                    }
+                }
+            }
+
+            return pieceExcludesUsersCount;
+        }
     }
 }

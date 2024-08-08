@@ -23,7 +23,7 @@ static void MapEndpoints(WebApplication app)
     var assignmentsApi = app.MapGroup("api/assigments").WithTags("Assignments").WithOpenApi();
     assignmentsApi.MapGet("/1", async () => await solutionsManager.SolveFirstAssignment());
     assignmentsApi.MapGet("/2", async () => await solutionsManager.SolveSecondAssignment());
-    assignmentsApi.MapGet("/3", () => solutionsManager.SolveThirdAssignment());
+    assignmentsApi.MapGet("/3", async () => await solutionsManager.SolveThirdAssignment());
     assignmentsApi.MapGet("/4", async () => await solutionsManager.SolveFourthAssignment());
 }
 
