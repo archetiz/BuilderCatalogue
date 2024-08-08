@@ -215,19 +215,19 @@ namespace BuilderCatalogue.Managers
             var minPieces = new Dictionary<ColouredPiece, int>();
             var maxPieces = new Dictionary<ColouredPiece, int>();
 
-            foreach (var userPieceWithColour in userData.Collection.Select(userPiece => userPiece.Key))
+            foreach (var userPiece in userData.Collection)
             {
-                minPieces[userPieceWithColour] = 0;
-                maxPieces[userPieceWithColour] = 0;
+                minPieces[userPiece.Key] = 0;
+                maxPieces[userPiece.Key] = 0;
                 foreach (var otherUserData in allUsersData)
                 {
-                    if (otherUserData.Collection.TryGetValue(userPieceWithColour, out int quantity))
+                    if (otherUserData.Collection.TryGetValue(userPiece.Key, out int quantity))
                     {
-                        if (quantity < minPieces[userPieceWithColour])
-                            minPieces[userPieceWithColour] = quantity;
+                        if (quantity < minPieces[userPiece.Key])
+                            minPieces[userPiece.Key] = int.Max(quantity, userPiece.Value);
 
-                        if (quantity > maxPieces[userPieceWithColour])
-                            maxPieces[userPieceWithColour] = quantity;
+                        if (quantity > maxPieces[userPiece.Key])
+                            maxPieces[userPiece.Key] = int.Min(quantity, userPiece.Value);
                     }
                 }
             }
